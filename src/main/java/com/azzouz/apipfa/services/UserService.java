@@ -1,7 +1,6 @@
 package com.azzouz.apipfa.services;
 
 import com.azzouz.apipfa.dto.UserDTO;
-import com.azzouz.apipfa.entities.Location;
 import com.azzouz.apipfa.entities.Role;
 import com.azzouz.apipfa.entities.User;
 import com.azzouz.apipfa.exception.NotFoundException;
@@ -54,7 +53,7 @@ public class UserService {
   }
 
   public UserDTO createUser(
-      final UserDTO userDTO, final BindingResult bindingResult, final long locationId) {
+      final UserDTO userDTO, final BindingResult bindingResult, final String locationCity) {
     // final Location location = locationRepository.findById(locationId);
     final User userNameExists = userRepository.findByEmail(userDTO.getUsername());
 
@@ -72,9 +71,12 @@ public class UserService {
     // userDTO.setLocation(location);
     userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
     userDTO.setActive(0);
+    final String userCity = String.valueOf(locationRepository.findByCity(locationCity));
+
     final User user = UserMapper.MAPPER.toUser(userDTO);
-    final Location locationUser = locationRepository.findById(locationId);
-    user.setLocation(locationUser);
+    user.setLocation(locationRepository.findByCity(locationCity));
+    // final Location locationUser = locationRepository.findByCity(locationCity);
+    // user.setLocation(locationUser);
     /*} else { if (locationUser == null) {
       user.setLocation(locationUser);
     }*/
@@ -88,6 +90,7 @@ public class UserService {
             .findById(Long.valueOf(userId))
             .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + userId));
     user.setActive(0);
+    user.setLocation(user.getLocation());
     return EnableMapper.MAPPER.toDisable(userRepository.save(user));
   }
 
@@ -97,6 +100,7 @@ public class UserService {
             .findById(Long.valueOf(userId))
             .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + userId));
     user.setActive(1);
+    user.setLocation(user.getLocation());
     return EnableMapper.MAPPER.toEnable(userRepository.save(user));
   }
 

@@ -26,7 +26,7 @@ public class PubliciteController {
   PubliciteDTO createPublicite(
       @Valid @RequestBody final PubliciteDTO publiciteDTO,
       final BindingResult result,
-      @RequestParam(value = "locationId") final Long locationId
+      @RequestParam(value = "locationCity") final String locationCity
       /*,@RequestParam("picture") final MultipartFile[] files*/ ) {
 
     /*final StringBuilder fileName = new StringBuilder();
@@ -40,7 +40,7 @@ public class PubliciteController {
       e.printStackTrace();
     }
     publiciteDTO.setPicture(fileName.toString());*/
-    return publiciteService.createPublicite(publiciteDTO, locationId);
+    return publiciteService.createPublicite(publiciteDTO, locationCity);
   }
 
   @GetMapping("/{userId}/all")

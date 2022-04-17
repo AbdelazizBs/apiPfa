@@ -26,13 +26,13 @@ public class UserController {
   UserDTO createUser(
       @Valid @RequestBody final UserDTO userDTO,
       final BindingResult bindingResult,
-      @RequestParam(value = "locationId") final Long locationId) {
+      @RequestParam(value = "locationCity") final String locationCity) {
     final User userExists = userRepository.findByEmail(userDTO.getEmail());
     if (userExists != null) {
       bindingResult.rejectValue(
           "email", "error.userDTO", "There is already a user registered with this email ");
     }
-    return userService.createUser(userDTO, bindingResult, locationId);
+    return userService.createUser(userDTO, bindingResult, locationCity);
   }
 
   @GetMapping("/{userId}")

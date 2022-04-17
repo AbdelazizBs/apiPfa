@@ -22,5 +22,5 @@ public class UserDTO {
   private String password;
   private Long phoneNumber;
   private Set<Role> roles;
-  private long locationId;
+  private String locationCity;
 }

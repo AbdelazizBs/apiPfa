@@ -17,13 +17,13 @@ public abstract class UserMapper {
   public static UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
   @Mapping(target = "password", ignore = true)
-  @Mapping(target = "locationId", ignore = true)
+  @Mapping(target = "locationCity", ignore = true)
   public abstract UserDTO toUserDTO(User user);
 
   public abstract User toUser(UserDTO userDTO);
 
   @AfterMapping
   void updateUserDTO(final User user, @MappingTarget final UserDTO userDTO) {
-    userDTO.setLocationId(user.getLocation().getId());
+    userDTO.setLocationCity(user.getLocation().getCity());
   }
 }

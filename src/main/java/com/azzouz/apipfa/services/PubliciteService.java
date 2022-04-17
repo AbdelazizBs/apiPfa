@@ -32,9 +32,9 @@ public class PubliciteService {
     this.locationRepository = locationRepository;
   }
 
-  public PubliciteDTO createPublicite(final PubliciteDTO publiciteDTO, final long locationId) {
+  public PubliciteDTO createPublicite(final PubliciteDTO publiciteDTO, final String locationCity) {
     final Publicite pub = PubliciteMapper.MAPPER.toPublicite(publiciteDTO);
-    pub.setLocation(locationRepository.findById(locationId));
+    pub.setLocation(locationRepository.findByCity(locationCity));
     return PubliciteMapper.MAPPER.toPubliciteDTO(publiciteRepository.save(pub));
   }
 

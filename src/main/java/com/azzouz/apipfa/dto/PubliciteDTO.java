@@ -19,5 +19,5 @@ public class PubliciteDTO {
   private Long userId;
   private String picture;
   private Category category;
-  private Long locationId;
+  private String locationCity;
 }

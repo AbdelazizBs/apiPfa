@@ -50,7 +50,7 @@ public class User {
   private Set<Role> roles;
 
   @ManyToOne
-  @JoinColumn(name = "location_id" /*, nullable = false*/)
+  @JoinColumn(name = "locationCity" /*, nullable = false*/)
   private Location location;
 
   /* @Enumerated(EnumType.STRING)

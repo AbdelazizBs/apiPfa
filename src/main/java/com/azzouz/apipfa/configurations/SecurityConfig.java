@@ -136,6 +136,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll() // accès pour tous users
         .antMatchers("/location/**")
         .permitAll() // accès pour tous users
+        .antMatchers("/annances/**")
+        .permitAll() // accès pour tous users
         // .antMatchers("/provider/**").hasAuthority("ADMIN")
         /*  .antMatchers("/users/enable").hasAuthority("ADMIN")
         .antMatchers("/users/disable").hasAuthority("ADMIN")*/

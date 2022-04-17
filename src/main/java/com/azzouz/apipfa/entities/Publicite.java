@@ -39,6 +39,6 @@ public class Publicite {
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "location_id" /*, nullable = false*/)
+  @JoinColumn(name = "locationCity" /*, nullable = false*/)
   private Location location;
 }

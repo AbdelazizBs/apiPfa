@@ -17,7 +17,6 @@ public abstract class PubliciteMapper {
   public static PubliciteMapper MAPPER = Mappers.getMapper(PubliciteMapper.class);
 
   @Mapping(target = "userId", ignore = true)
-  @Mapping(target = "locationId", ignore = true)
   public abstract PubliciteDTO toPubliciteDTO(Publicite publicite);
 
   @Mapping(target = "user", ignore = true)
@@ -26,7 +25,7 @@ public abstract class PubliciteMapper {
   @AfterMapping
   void updatePubliciteDTO(
       final Publicite publicite, @MappingTarget final PubliciteDTO publiciteDTO) {
-    publiciteDTO.setLocationId(publicite.getLocation().getId());
+    publiciteDTO.setLocationCity(publicite.getLocation().getCity());
     publiciteDTO.setUserId(publicite.getUser().getId());
   }
 
@@ -35,6 +34,5 @@ public abstract class PubliciteMapper {
     final User user = new User();
     user.setId(publiciteDTO.getUserId());
     publicite.setUser(user);
-    publicite.setLocation(locationRepository.findById(publiciteDTO.getLocationId()));
   }
 }
