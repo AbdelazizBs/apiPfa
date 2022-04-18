@@ -49,7 +49,7 @@ public class PubliciteController {
   }
 
   @GetMapping("/{userId}")
-  List<PubliciteDTO> showAllPublicite(
+  List<PubliciteDTO> showAllPubliciteWithCategory(
       @PathVariable(value = "userId") final Long userId,
       @RequestParam(value = "category") final Category category) {
     return publiciteService.showAllPubliciteCategory(userId, category);
@@ -58,18 +58,21 @@ public class PubliciteController {
   @GetMapping("/{userId}/")
   List<PubliciteDTO> searcheWithLocation(
       @PathVariable(value = "userId") final Long userId,
-      @RequestParam(value = "locationId") final Long locationId) {
-    return publiciteService.searcheWithLocation(userId, locationId);
+      @RequestParam(value = "locationCity") final String locationCity) {
+    return publiciteService.searcheWithLocation(userId, locationCity);
   }
 
-  @GetMapping("/{userId}/my")
+  @GetMapping("/my/{userId}")
   List<PubliciteDTO> showMyPublicite(@PathVariable(value = "userId") final Long userId) {
+
     return publiciteService.showMyPublicite(userId);
   }
 
   @PutMapping("/{pubId}/update")
   PubliciteDTO updatePublicite(
-      @PathVariable final Long pubId, @Valid @RequestBody final PubliciteDTO publiciteDTO) {
-    return publiciteService.updatePublicite(pubId, publiciteDTO);
+      @PathVariable final Long pubId,
+      @Valid @RequestBody final PubliciteDTO publiciteDTO,
+      @RequestParam(value = "locationCity") final String locationCity) {
+    return publiciteService.updatePublicite(pubId, publiciteDTO, locationCity);
   }
 }

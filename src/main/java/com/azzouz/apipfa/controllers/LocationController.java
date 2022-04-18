@@ -20,7 +20,7 @@ public class LocationController {
   }
 
   @GetMapping("/getCityLocation/{locationId}")
-  String getCityLocation(@PathVariable(value = "locationId") final Long locationId) {
+  String getSpeceficLocationWithId(@PathVariable(value = "locationId") final Long locationId) {
     return locationRepository.findById(locationId).getCity();
   }
 

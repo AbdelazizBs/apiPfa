@@ -1,6 +1,7 @@
 package com.azzouz.apipfa.services;
 
 import com.azzouz.apipfa.dto.PubliciteDTO;
+import com.azzouz.apipfa.entities.Location;
 import com.azzouz.apipfa.entities.Publicite;
 import com.azzouz.apipfa.entities.User;
 import com.azzouz.apipfa.entities.enums.Category;
@@ -51,13 +52,13 @@ public class PubliciteService {
     return Collections.EMPTY_LIST;
   }
 
-  public List<PubliciteDTO> searcheWithLocation(final Long userId, final Long locationId) {
+  public List<PubliciteDTO> searcheWithLocation(final Long userId, final String locationCity) {
     final User user =
         userRepository
             .findById(userId)
             .orElseThrow(() -> new NotFoundException("cannot found user"));
     if (user.getActive() == 1) {
-      return publiciteRepository.findByLocationId(locationId).stream()
+      return publiciteRepository.findByLocation_City(locationCity).stream()
           .map(PubliciteMapper.MAPPER::toPubliciteDTO)
           .collect(Collectors.toList());
     }
@@ -91,7 +92,9 @@ public class PubliciteService {
     return Collections.EMPTY_LIST;
   }
 
-  public PubliciteDTO updatePublicite(final Long pubId, final PubliciteDTO publiciteDTO) {
+  public PubliciteDTO updatePublicite(
+      final Long pubId, final PubliciteDTO publiciteDTO, final String locationCity) {
+    final Location location = locationRepository.findByCity(locationCity);
     return publiciteRepository
         .findById(pubId)
         .map(
@@ -99,6 +102,7 @@ public class PubliciteService {
               pubb.setDescription(publiciteDTO.getDescription());
               pubb.setDate(publiciteDTO.getDate());
               pubb.setCategory(publiciteDTO.getCategory());
+              pubb.setLocation(location);
               return PubliciteMapper.MAPPER.toPubliciteDTO(publiciteRepository.save(pubb));
             })
         .orElseThrow(() -> new NotFoundException("Publicite Id  " + pubId + " not found"));

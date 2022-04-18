@@ -9,8 +9,11 @@ import java.util.List;
 
 @Repository
 public interface PubliciteRepository extends JpaRepository<Publicite, Long> {
+  List<Publicite> findByLocation_City(String city);
 
   List<Publicite> findByUser_Id(Long id);
+
+  //  List<Publicite> findByUser_Id(Long id);
 
   List<Publicite> findByCategoryAndUser_Id(Category category, Long id);
 

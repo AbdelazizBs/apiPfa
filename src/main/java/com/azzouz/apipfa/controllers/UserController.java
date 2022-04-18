@@ -49,8 +49,10 @@ public class UserController {
 
   @PutMapping("/update/{userId}")
   public UserDTO updateProfil(
-      @PathVariable final int userId, @Valid @RequestBody final User userRequest) {
-    return userService.updateProfil(userId, userRequest);
+      @PathVariable final int userId,
+      @Valid @RequestBody final User userRequest,
+      @RequestParam(value = "locationCity") final String locationCity) {
+    return userService.updateProfil(userId, userRequest, locationCity);
   }
   /* @PostMapping("/login")
       UserDTO loginUser(@Valid @RequestBody final UserDTO usen, final BindingResult bindingResult) {

@@ -1,6 +1,7 @@
 package com.azzouz.apipfa.services;
 
 import com.azzouz.apipfa.dto.UserDTO;
+import com.azzouz.apipfa.entities.Location;
 import com.azzouz.apipfa.entities.Role;
 import com.azzouz.apipfa.entities.User;
 import com.azzouz.apipfa.exception.NotFoundException;
@@ -104,7 +105,9 @@ public class UserService {
     return EnableMapper.MAPPER.toEnable(userRepository.save(user));
   }
 
-  public UserDTO updateProfil(final long userId, final User userRequest) {
+  public UserDTO updateProfil(
+      final long userId, final User userRequest, final String locationCity) {
+    final Location location = locationRepository.findByCity(locationCity);
     return userRepository
         .findById(userId)
         .map(
@@ -114,6 +117,7 @@ public class UserService {
               user.setAddress(userRequest.getAddress());
               user.setPreferedCategory(userRequest.getPreferedCategory());
               user.setPhoneNumber(userRequest.getPhoneNumber());
+              user.setLocation(location);
 
               return UserMapper.MAPPER.toUserDTO(userRepository.save(user));
             })
