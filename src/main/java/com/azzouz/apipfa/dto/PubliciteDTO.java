@@ -2,12 +2,14 @@ package com.azzouz.apipfa.dto;
 
 // import com.azzouz.apipfa.entities.Location;
 
+import com.azzouz.apipfa.entities.Picture;
 import com.azzouz.apipfa.entities.enums.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ public class PubliciteDTO {
   private String description;
   private Date date;
   private Long userId;
-  private String picture;
+  private List<Picture> picture;
   private Category category;
   private String locationCity;
 }

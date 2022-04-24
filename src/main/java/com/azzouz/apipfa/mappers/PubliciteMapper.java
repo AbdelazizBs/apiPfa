@@ -3,17 +3,14 @@ package com.azzouz.apipfa.mappers;
 import com.azzouz.apipfa.dto.PubliciteDTO;
 import com.azzouz.apipfa.entities.Publicite;
 import com.azzouz.apipfa.entities.User;
-import com.azzouz.apipfa.repositories.LocationRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
 public abstract class PubliciteMapper {
-  @Autowired private LocationRepository locationRepository;
   public static PubliciteMapper MAPPER = Mappers.getMapper(PubliciteMapper.class);
 
   @Mapping(target = "userId", ignore = true)

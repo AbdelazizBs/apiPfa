@@ -33,6 +33,8 @@ public class User {
   @Column(name = "address")
   private String address;
 
+  @Column private String picture;
+
   @Column private String password;
 
   @Column(name = "phone")
