@@ -2,13 +2,15 @@ package com.azzouz.apipfa.controllers;
 
 import com.azzouz.apipfa.dto.UserDTO;
 import com.azzouz.apipfa.entities.User;
+import com.azzouz.apipfa.entities.enums.Category;
 import com.azzouz.apipfa.repositories.UserRepository;
 import com.azzouz.apipfa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -24,20 +26,51 @@ public class UserController {
 
   @PostMapping("/registre")
   UserDTO createUser(
-      @Valid @RequestBody final UserDTO userDTO,
-      final BindingResult bindingResult,
-      @RequestParam(value = "locationCity") final String locationCity) {
-    final User userExists = userRepository.findByEmail(userDTO.getEmail());
-    if (userExists != null) {
+      @RequestParam(value = "username") final String username,
+      @RequestParam(value = "email") final String email,
+      @RequestParam(value = "address") final String address,
+      @RequestParam(value = "preferedCategory") final Category preferedCategory,
+      @RequestParam(value = "password") final String password,
+      @RequestParam("file") final MultipartFile files,
+      @RequestParam(value = "phoneNumber") final Long phoneNumber,
+      @RequestParam(value = "locationCity") final String locationCity)
+      throws IOException {
+    final User userExists = userRepository.findByEmail(email);
+    /* if (userExists != null) {
       bindingResult.rejectValue(
           "email", "error.userDTO", "There is already a user registered with this email ");
-    }
-    return userService.createUser(userDTO, bindingResult, locationCity);
+    }*/
+    return userService.createUser(
+        username, email, address, preferedCategory, password, files, phoneNumber, locationCity);
   }
 
   @GetMapping("/{userId}")
   public Optional<User> getProvider(@PathVariable final Long userId) {
     return userRepository.findById(userId);
+  }
+
+  @PutMapping("/update/{userId}")
+  public UserDTO updateProfil(
+      @PathVariable final int userId,
+      @RequestParam(value = "username") final String username,
+      @RequestParam(value = "email") final String email,
+      @RequestParam(value = "address") final String address,
+      @RequestParam(value = "preferedCategory") final Category preferedCategory,
+      @RequestParam(value = "password") final String password,
+      @RequestParam("file") final MultipartFile file,
+      @RequestParam(value = "phoneNumber") final Long phoneNumber,
+      @RequestParam(value = "locationCity") final String locationCity)
+      throws IOException {
+    return userService.updateProfil(
+        userId,
+        username,
+        email,
+        address,
+        preferedCategory,
+        password,
+        file,
+        phoneNumber,
+        locationCity);
   }
 
   @PostMapping("/login")
@@ -47,13 +80,6 @@ public class UserController {
     return userService.login(username, password);
   }
 
-  @PutMapping("/update/{userId}")
-  public UserDTO updateProfil(
-      @PathVariable final int userId,
-      @Valid @RequestBody final User userRequest,
-      @RequestParam(value = "locationCity") final String locationCity) {
-    return userService.updateProfil(userId, userRequest, locationCity);
-  }
   /* @PostMapping("/login")
       UserDTO loginUser(@Valid @RequestBody final UserDTO usen, final BindingResult bindingResult) {
           return userService.loginUser(userDTO, bindingResult);

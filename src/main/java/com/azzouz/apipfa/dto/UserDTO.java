@@ -1,5 +1,6 @@
 package com.azzouz.apipfa.dto;
 
+import com.azzouz.apipfa.entities.Picture;
 import com.azzouz.apipfa.entities.Role;
 import com.azzouz.apipfa.entities.enums.Category;
 import lombok.Getter;
@@ -23,4 +24,5 @@ public class UserDTO {
   private Long phoneNumber;
   private Set<Role> roles;
   private String locationCity;
+  private Picture picture;
 }

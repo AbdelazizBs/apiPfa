@@ -1,5 +1,5 @@
 package com.azzouz.apipfa.services;
-/*
+
 import com.azzouz.apipfa.entities.Picture;
 import com.azzouz.apipfa.repositories.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +28,3 @@ public class FileStorageService {
     return pictureRepository.findAll().stream();
   }
 }
-*/

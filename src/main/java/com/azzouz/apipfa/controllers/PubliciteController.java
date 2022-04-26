@@ -26,7 +26,7 @@ public class PubliciteController {
       @RequestParam(value = "description") final String description,
       @RequestParam(value = "userId") final Long userId,
       @RequestParam(value = "category") final Category category,
-      @RequestParam("files") final MultipartFile files,
+      @RequestParam("files") final MultipartFile[] files,
       @RequestParam(value = "locationCity") final String locationCity)
       throws IOException {
 
@@ -78,6 +78,7 @@ public class PubliciteController {
       @RequestParam("files") final MultipartFile[] files,
       @RequestParam(value = "locationCity") final String locationCity)
       throws IOException {
+
     /*
             final StringBuilder fileName = new StringBuilder();
             final MultipartFile file = files[0];

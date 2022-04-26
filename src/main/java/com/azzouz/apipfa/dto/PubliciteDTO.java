@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ public class PubliciteDTO {
   private String description;
   private Date date;
   private Long userId;
-  private List<Picture> picture;
+  private ArrayList<Picture> picture;
   private Category category;
   private String locationCity;
 }

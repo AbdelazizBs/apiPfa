@@ -33,7 +33,7 @@ public class User {
   @Column(name = "address")
   private String address;
 
-  @Column private String picture;
+  @OneToOne private Picture picture;
 
   @Column private String password;
 

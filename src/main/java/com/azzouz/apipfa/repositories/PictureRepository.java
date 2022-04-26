@@ -8,5 +8,9 @@ import java.util.List;
 
 @Repository
 public interface PictureRepository extends JpaRepository<Picture, Long> {
+  boolean existsByFileName(String fileName);
+
+  boolean existsByBytes(byte[] bytes);
+
   List<Picture> findByFileNameAndBytes(String fileName, byte[] bytes);
 }

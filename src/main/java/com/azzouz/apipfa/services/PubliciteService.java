@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class PubliciteService {
   @Autowired private PictureRepository pictureRepository;
   private final PubliciteRepository publiciteRepository;
   private final LocationRepository locationRepository;
-
+  @Autowired private FileStorageService fileStorageService;
   private final UserRepository userRepository;
 
   public PubliciteService(
@@ -120,18 +121,43 @@ public class PubliciteService {
       final String description,
       final Long userId,
       final Category category,
-      final MultipartFile fileN,
+      final MultipartFile[] files,
       final String locationCity)
       throws IOException {
-    final String fileNamee = StringUtils.cleanPath(fileN.getOriginalFilename());
-    final Picture fileDBB = new Picture(fileNamee, fileN.getBytes());
+    /*
+    final StringBuilder fileName = new StringBuilder();
+    final MultipartFile files = fileN[0];
+    final String fileNamee = StringUtils.cleanPath(files.getOriginalFilename());
+    final Picture fileDBB = new Picture(fileNamee, files.getBytes());
     pictureRepository.save(fileDBB);
+    */
     final Location location = locationRepository.findByCity(locationCity);
     final PubliciteDTO publiciteDTO = new PubliciteDTO();
     publiciteDTO.setUserId(userId);
     publiciteDTO.setCategory(category);
     publiciteDTO.setDescription(description);
-    publiciteDTO.setPicture(Collections.singletonList(fileDBB));
+    try {
+      final List<String> fileNames = new ArrayList<>();
+      final ArrayList<Picture> pic = new ArrayList<>();
+      Arrays.asList(files).stream()
+          .forEach(
+              file -> {
+                try {
+                  final String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                  final Picture fileDB = new Picture(fileName, file.getBytes());
+                  pictureRepository.save(fileDB);
+                  pic.add(fileDB);
+                  publiciteDTO.setPicture(pic);
+
+                } catch (final IOException e) {
+                  e.printStackTrace();
+                }
+                fileNames.add(file.getOriginalFilename());
+              });
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
+    // publiciteDTO.setPicture(Collections.singletonList(fileDBB));
 
     return publiciteRepository
         .findById(pubId)
@@ -150,17 +176,38 @@ public class PubliciteService {
       final String description,
       final Long userId,
       final Category category,
-      final MultipartFile fileN,
+      final MultipartFile[] files,
       final String locationCity)
       throws IOException {
-    final String fileName = StringUtils.cleanPath(fileN.getOriginalFilename());
-    final Picture fileDB = new Picture(fileName, fileN.getBytes());
-    pictureRepository.save(fileDB);
+
     final PubliciteDTO publiciteDTO = new PubliciteDTO();
     publiciteDTO.setUserId(userId);
     publiciteDTO.setCategory(category);
     publiciteDTO.setDescription(description);
-    publiciteDTO.setPicture(Collections.singletonList(fileDB));
+    try {
+      final List<String> fileNames = new ArrayList<>();
+      final ArrayList<Picture> pic = new ArrayList<>();
+      Arrays.asList(files).stream()
+          .forEach(
+              file -> {
+                try {
+                  final String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                  final Picture fileDB = new Picture(fileName, file.getBytes());
+
+                  pictureRepository.save(fileDB);
+
+                  pic.add(fileDB);
+                  publiciteDTO.setPicture(pic);
+
+                } catch (final IOException e) {
+                  e.printStackTrace();
+                }
+                fileNames.add(file.getOriginalFilename());
+              });
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
+
     final Publicite pub = PubliciteMapper.MAPPER.toPublicite(publiciteDTO);
     pub.setLocation(locationRepository.findByCity(locationCity));
     return PubliciteMapper.MAPPER.toPubliciteDTO(publiciteRepository.save(pub));
